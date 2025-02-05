@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANI Generator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            color: #333;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            color: #0078d4;
+        }
+
+        h2 {
+            font-size: 1.6em;
+            color: #005fa3;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .container {
+            max-width: 700px;
+            background: #fff;
+            padding: 25px;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin: 12px 0;
+            text-align: left;
+        }
+
+        label {
+            font-size: 1.1em;
+            color: #555;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            padding: 12px;
+            width: calc(100% - 24px);
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1.1em;
+        }
+
+        input[type="checkbox"] {
+            width: auto;
+            margin-left: 5px;
+        }
+
+        button {
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            background-color: #0078d4;
+            color: white;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+            margin-top: 12px;
+        }
+
+        button:hover {
+            background-color: #005fa3;
+        }
+
+        .output-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #eef2f3;
+            padding: 14px;
+            margin-top: 14px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            word-break: break-word;
+            font-size: 1.3em;
+            position: relative;
+        }
+
+        .output-container p {
+            flex-grow: 1;
+            margin: 0;
+            padding: 12px;
+            background: #fff;
+            border-radius: 6px;
+            min-height: 50px;
+            text-align: left;
+        }
+
+        .copy-btn {
+            padding: 8px;
+            border: none;
+            border-radius: 6px;
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            margin-left: 12px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .copy-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <h1>Digital Network Communication</h1>
+    <h2>ANI Generator</h2>
+    
+    <div class="container">
+        <h3>Short ANI</h3>
+        <div class="form-group">
+            <label><input type="checkbox" id="plus1"> With (+)</label>
+        </div>
+        <div class="form-group">
+            <label>Prefix:</label>
+            <input type="number" id="digit1" placeholder="Enter Digit">
+        </div>
+        <div class="form-group">
+            <label>Length:</label>
+            <input type="number" id="sample1" placeholder="Enter Length">
+        </div>
+        
+        <button onclick="generateFormat1()">Generate</button>
+        <div class="output-container">
+            <p id="output1"></p>
+            <button class="copy-btn" onclick="copyText('output1')">📋</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h3>Long ANI</h3>
+        <div class="form-group">
+            <label><input type="checkbox" id="plus2"> With (+)</label>
+        </div>
+        <div class="form-group">
+            <label>Prefix:</label>
+            <input type="number" id="digit2" placeholder="Enter Digit">
+        </div>
+        <div class="form-group">
+            <label>Length:</label>
+            <input type="number" id="secondPart" placeholder="Enter Length">
+        </div>
+
+        <button onclick="generateFormat2()">Generate</button>
+        <div class="output-container">
+            <p id="output2"></p>
+            <button class="copy-btn" onclick="copyText('output2')">📋</button>
+        </div>
+    </div>
+
+    <script>
+    function generateFormat1() {
+    let digit = document.getElementById("digit1").value;
+    let sample = document.getElementById("sample1").value;
+    let withPlus = document.getElementById("plus1").checked;
+    if (digit && sample) {
+        let output = withPlus ? `*:+${digit}${'?'.repeat(sample)}` : `*:${digit}${'?'.repeat(sample)}`;
+        document.getElementById("output1").innerText = output;
+    } else {
+        document.getElementById("output1").innerText = "Please enter valid inputs";
+    }
+}
+
+function generateFormat2() {
+    let digit = document.getElementById("digit2").value;
+    let secondPart = document.getElementById("secondPart").value;
+    let withPlus = document.getElementById("plus2").checked;
+    if (digit && secondPart) {
+        let output = [];
+        for (let i = 0; i < 10; i++) {
+            let ani = withPlus 
+                ? `${i}*:+${digit}${9 - i}${'?'.repeat(secondPart)}` 
+                : `${i}*: ${digit}${9 - i}${'?'.repeat(secondPart)}`;  
+            output.push(ani);
+        }
+        document.getElementById("output2").innerText = output.join(", ");
+    } else {
+        document.getElementById("output2").innerText = "Please enter valid inputs";
+    }
+}
+
+
+        function copyText(outputId) {
+            const outputText = document.getElementById(outputId).innerText;
+            if (outputText.trim() !== "") {
+                navigator.clipboard.writeText(outputText).then(() => {
+                    alert('Copied to clipboard!');
+                }).catch(err => {
+                    alert('Failed to copy text: ' + err);
+                });
+            } else {
+                alert("No text to copy!");
+            }
+        }
+    </script>
+</body>
+</html>
